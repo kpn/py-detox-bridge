@@ -9,7 +9,7 @@ All unreleased changes should be added to appropriate section bellow
 
 ### Added
 New features
-- 
+- detox_bridge.node module to control the node.js bridge
 
 ### Changed
 Changes in existing functionality
