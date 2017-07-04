@@ -1,0 +1,1 @@
+{"cookiecutter": {"package": "detox_bridge", "project_short_description": "A python bridge to the detox greybox testing library", "project_slug": "py-detox-bridge", "namespace": "", "opensource": "yes", "full_name": "Jan-Eric Duden", "copyright_year": "2017", "email": "jan-eric.duden@kpn.com"}}
