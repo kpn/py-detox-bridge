@@ -10,14 +10,14 @@ Requirements
 The package requires nvm to be installed. The NVM_DIR environment needs to point at the root directory of nvm containing the nvm.sh script.
 
 
-.. image:: https://secure.travis-ci.org/kpn-digital/detox_bridge.svg?branch=master
-    :target:  http://travis-ci.org/kpn-digital/detox_bridge?branch=master
+.. image:: https://secure.travis-ci.org/kpn-digital/py-detox-bridge.svg?branch=master
+    :target:  http://travis-ci.org/kpn-digital/py-detox-bridge?branch=master
 
-.. image:: https://img.shields.io/codecov/c/github/kpn-digital/detox_bridge/master.svg
-    :target: http://codecov.io/github/kpn-digital/detox_bridge?branch=master
+.. image:: https://img.shields.io/codecov/c/github/kpn-digital/py-detox-bridge/master.svg
+    :target: http://codecov.io/github/kpn-digital/py-detox-bridge?branch=master
 
-.. image:: https://img.shields.io/pypi/v/detox_bridge.svg
-    :target: https://pypi.python.org/pypi/detox_bridge
+.. image:: https://img.shields.io/pypi/v/detox-bridge.svg
+    :target: https://pypi.python.org/pypi/detox-bridge
 
-.. image:: https://readthedocs.org/projects/detox_bridge/badge/?version=latest
-    :target: http://detox_bridge.readthedocs.org/en/latest/?badge=latest
+.. image:: https://readthedocs.org/projects/detox-bridge/badge/?version=latest
+    :target: http://detox-bridge.readthedocs.org/en/latest/?badge=latest
