@@ -12,7 +12,7 @@ write_setup_py(
     author_email='jan-eric.duden@kpn.com',
     url='ssh://git@github.com:kpn-digital/py-detox-bridge.git',
     install_requires=list_requirements('requirements/requirements-base.txt'),
-    packages=find_packages(exclude=['detox_bridge.tests*']),
+    packages=find_packages(exclude=['tests*']),
     tests_require=['tox'],
     include_package_data=True,
     zip_safe=False,
@@ -22,8 +22,9 @@ write_setup_py(
         'Intended Audience :: Developers',
         'Operating System :: OS Independent',
         'Programming Language :: Python',
-        'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
         'Topic :: Internet :: WWW/HTTP',
     ]
 )
