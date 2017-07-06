@@ -40,7 +40,7 @@ class Connection(object):
 
     def send_thread(self, js):
         try:
-            request = json.dumps({"eval": js}) + "\n"
+            request = json.dumps({"eval": str(js)}) + "\n"
             logger.info("Request:{}\n".format(request))
             self._proc.stdin.write(request.encode("utf-8"))
             self._proc.stdin.flush()
@@ -50,11 +50,12 @@ class Connection(object):
             error = self._result.get("error")
             if error:
                 raise NodeError(error)
+            self._result = self._result.get("result", None)
         except:
             t, v, tb = sys.exc_info()
             self._result = v
 
-    def send(self, js, *, timeout):
+    def __call__(self, js, *, timeout=1):
         thread = threading.Thread(target=lambda: self.send_thread(js))
         thread.daemon = True
         thread.start()

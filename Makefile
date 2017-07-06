@@ -4,6 +4,8 @@
 # * docker
 # * docker-compose
 
+.SUFFIXES:
+
 DEPS:=requirements.txt
 DOCKER_COMPOSE=$(shell which docker-compose)
 
