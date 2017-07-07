@@ -168,3 +168,5 @@ target/
 Session.vim
 .netrwhist
 *~
+
+/venv

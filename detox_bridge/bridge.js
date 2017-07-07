@@ -1,7 +1,7 @@
 const vm = require('vm');
 const readline = require('readline');
 
-const sandbox = {result:undefined, error: undefined, console:console, global:{}};
+const sandbox = {result:undefined, error: undefined, console:console, global:{}, require:require};
 
 vm.createContext(sandbox);
 

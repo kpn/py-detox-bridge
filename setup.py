@@ -7,8 +7,9 @@ setup(**{'author': 'Jan-Eric Duden',
                  'Intended Audience :: Developers',
                  'Operating System :: OS Independent',
                  'Programming Language :: Python',
-                 'Programming Language :: Python :: 2',
-                 'Programming Language :: Python :: 2.7',
+                 'Programming Language :: Python :: 3',
+                 'Programming Language :: Python :: 3.5',
+                 'Programming Language :: Python :: 3.6',
                  'Topic :: Internet :: WWW/HTTP'],
  'description': 'A python bridge to the detox greybox testing library',
  'include_package_data': True,
@@ -29,25 +30,25 @@ setup(**{'author': 'Jan-Eric Duden',
                      '\n'
                      '\n'
                      '.. image:: '
-                     'https://secure.travis-ci.org/kpn-digital/detox_bridge.svg?branch=master\n'
+                     'https://secure.travis-ci.org/kpn-digital/py-detox-bridge.svg?branch=master\n'
                      '    :target:  '
-                     'http://travis-ci.org/kpn-digital/detox_bridge?branch=master\n'
+                     'http://travis-ci.org/kpn-digital/py-detox-bridge?branch=master\n'
                      '\n'
                      '.. image:: '
-                     'https://img.shields.io/codecov/c/github/kpn-digital/detox_bridge/master.svg\n'
+                     'https://img.shields.io/codecov/c/github/kpn-digital/py-detox-bridge/master.svg\n'
                      '    :target: '
-                     'http://codecov.io/github/kpn-digital/detox_bridge?branch=master\n'
+                     'http://codecov.io/github/kpn-digital/py-detox-bridge?branch=master\n'
                      '\n'
                      '.. image:: '
-                     'https://img.shields.io/pypi/v/detox_bridge.svg\n'
-                     '    :target: https://pypi.python.org/pypi/detox_bridge\n'
+                     'https://img.shields.io/pypi/v/detox-bridge.svg\n'
+                     '    :target: https://pypi.python.org/pypi/detox-bridge\n'
                      '\n'
                      '.. image:: '
-                     'https://readthedocs.org/projects/detox_bridge/badge/?version=latest\n'
+                     'https://readthedocs.org/projects/detox-bridge/badge/?version=latest\n'
                      '    :target: '
-                     'http://detox_bridge.readthedocs.org/en/latest/?badge=latest\n',
+                     'http://detox-bridge.readthedocs.org/en/latest/?badge=latest\n',
  'name': 'detox-bridge',
- 'packages': ['detox_bridge', 'tests'],
+ 'packages': ['detox_bridge'],
  'tests_require': ['tox'],
  'url': 'ssh://git@github.com:kpn-digital/py-detox-bridge.git',
  'version': None,

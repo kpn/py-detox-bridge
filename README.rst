@@ -1,15 +1,6 @@
 Detox Python Bridge
 ===========================
 
-A bridge to enable python code to use the detox grey-box testing API ( https://github.com/wix/detox )
-
-
-Requirements
-============
-
-The package requires nvm to be installed. The NVM_DIR environment needs to point at the root directory of nvm containing the nvm.sh script.
-
-
 .. image:: https://secure.travis-ci.org/kpn-digital/py-detox-bridge.svg?branch=master
     :target:  http://travis-ci.org/kpn-digital/py-detox-bridge?branch=master
 
@@ -21,3 +12,20 @@ The package requires nvm to be installed. The NVM_DIR environment needs to point
 
 .. image:: https://readthedocs.org/projects/detox-bridge/badge/?version=latest
     :target: http://detox-bridge.readthedocs.org/en/latest/?badge=latest
+
+A bridge to enable python code to use the detox grey-box testing API ( https://github.com/wix/detox )
+
+
+Requirements
+============
+
+NVM
+---
+
+The package requires nvm to be installed. Either the NVM environment variable needs to contain the full path of the nvm.sh script, or 
+the NVM_DIR environment variable needs to point at the root directory of nvm containing the nvm.sh script.
+
+NODE
+----
+
+The code emitted by this bridge requires node 7.6.0 or higher.
