@@ -23,7 +23,7 @@ EXAMPLE_APP_BINARY=$(EXAMPLE_APP)/ios/build/Build/Products/Release-iphonesimulat
 
 .PHONY: clean docsclean pyclean test lint isort docs docker setup.py
 
-tox: venv setup.py
+tox: venv setup.py example_app
 	env
 	$(TOX)
 
@@ -40,6 +40,7 @@ clean: pyclean docsclean
 
 venv:
 	@python3.6 -m venv venv
+	# pinning setuptools fixes: https://github.com/pypa/setuptools/issues/885
 	@$(PIP) install -U "pip>=9" "setuptools==34.3.3"
 	@$(PIP) install -r $(DEPS)
 
