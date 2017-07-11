@@ -1,7 +1,7 @@
 import os
 
-from detox_bridge import await, by, detox, device, element, expect, node
-from pytest import fixture
+from detox_bridge import await, by, detox, device, element, expect, node, node_with_detox, waitFor
+from pytest import fixture, mark, raises
 
 
 @fixture(scope="session")
@@ -10,11 +10,7 @@ def detox_node_server():
     try:
         os.chdir("./detox/examples/demo-react-native")
         app_path = os.getcwd()
-        with node.start(default_timeout=10) as connection:
-            connection("require('{}');".format(
-                os.path.join(app_path, 'node_modules', 'babel-polyfill')))
-            connection("detox = require('{}');".format(
-                os.path.join(app_path, 'node_modules', 'detox')))
+        with node_with_detox(app_path=app_path, default_timeout=10) as connection:
             yield connection
     finally:
         os.chdir(cwd)
@@ -35,7 +31,6 @@ def detox_server(detox_node_server):
 
 @fixture
 def app_server(detox_server):
-    print(detox_server("return Object.getOwnPropertyNames(global)"))
     detox_server(await(device.reloadReactNative()))
     yield detox_server
 
@@ -56,3 +51,19 @@ def test_should_show_hello_after_tap(app_server):
 def test_should_show_world_after_tap(app_server):
     app_server(await(element(by.id('world_button')).tap()))
     app_server(await(expect(element(by.label('World!!!'))).toBeVisible()))
+
+
+def test_should_waitFor_passes_when_element_is_visible(app_server):
+    app_server(await(waitFor(element(by.id('world_button'))).toBeVisible().withTimeout(2000)))
+
+
+@mark.skip(reason="not clear if this expectation is as per spec. question to wix is pending")
+def test_should_waitFor_passes_when_element_is_not_visible_it_fails(app_server):
+    with raises(node.NodeError):
+        app_server(await(waitFor(element(by.id('notthere'))).toBeVisible().withTimeout(2000)))
+
+
+def test_should_raise_exception_after_tap_since_expectation_hasnt_been_met(app_server):
+    app_server(await(element(by.id('world_button')).tap()))
+    with raises(node.NodeError):
+        app_server(await(expect(element(by.label('NotVisible!!!'))).toBeVisible()))

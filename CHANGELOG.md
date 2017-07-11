@@ -9,7 +9,7 @@ All unreleased changes should be added to appropriate section bellow
 
 ### Added
 New features
-- detox_bridge.node module to control the node.js bridge
+- 
 
 ### Changed
 Changes in existing functionality
@@ -31,6 +31,13 @@ Any bug fixes
 Invite users to upgrade in case of vulnerabilities
 - 
 
-## [0.0.1] - YYYY-MM-DD
+## [1.0.0] (2017-07-11)
+
+### Added
+New features
+
+- detox_bridge functions to run tests using detox
+- detox_bridge.node module to control the node.js bridge
+- detox_bridge.js module to generate js code with python expressions
 
 Adhere to [semantic versioning](http://semver.org/) and [ISO date format](http://www.iso.org/iso/home/standards/iso8601.htm)

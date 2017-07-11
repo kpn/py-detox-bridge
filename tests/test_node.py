@@ -1,3 +1,5 @@
+from textwrap import dedent
+
 from detox_bridge import js, node
 from pytest import raises
 
@@ -37,8 +39,19 @@ def test_node_server_executes_uses_str_if_object_is_JSObject(node_server):
     node_server(js.Identifier("global").b, timeout=5)
 
 
-def test_node_server_executes_code_reporting_exceptions(node_server):
+def test_node_server_executes_code_reporting_exceptions_and_then_we_can_execute_another_statement(node_server):
     with raises(node.NodeError) as excinfo:
         node_server("throw new Error('hello')", timeout=5)
     assert excinfo.value.message == "hello"
     assert excinfo.value.stack
+
+    node_server("return 4") == 4
+
+
+def test_node_error_str_prints_multiline_exceptions_nicely():
+    assert str(node.NodeError({
+        "stack": "Line 1\nLine 2",
+    })) == dedent("""\
+    stack:
+      Line 1
+      Line 2""")
