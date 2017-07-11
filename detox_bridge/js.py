@@ -35,7 +35,7 @@ class ObjectProperty(Operators, JSObject):
         return "{}.{}".format(self._parent, self._identifier)
 
 
-class Call(JSObject):
+class Call(Operators, JSObject):
     def __init__(self, *, args, parent):
         self._args = args
         self._parent = parent
@@ -78,4 +78,4 @@ class GlobalAwait(JSObject):
         self._awaitable = awaitable
 
     def __str__(self):
-        return "(async ()=> {{ await {}; }})();".format(self._awaitable)
+        return "return (async ()=> {{ return await {}; }})()".format(self._awaitable)

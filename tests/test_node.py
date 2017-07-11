@@ -6,9 +6,21 @@ def test_node_which_pick_up_installed_node(node_environment):
     assert node_environment.which().endswith("v7.6.0/bin/node")
 
 
-def test_node_server_responds_with_a_timeout_error_if_code_executioin_takes_too_long(node_server):
+def test_node_server_responds_with_a_timeout_error_if_code_executioin_takes_longer_than_default_timeout(node_server):
+    node_server.default_timeout = 4
     with raises(node.TimeoutError):
-        node_server("while(true);", timeout=1)
+        node_server("while(true);")
+
+
+def test_node_allows_for_default_timeout_overidden_by_timeout_in_call(node_server):
+    sleep_for_5_seconds_and_return_4 =\
+        "return new Promise((resolve) => { setTimeout(()=> { console.error(\"resolved\"); resolve(4); }, 5000); });"
+
+    node_server.default_timeout = 10
+    assert node_server(sleep_for_5_seconds_and_return_4) == 4
+
+    with raises(node.TimeoutError):
+        assert node_server(sleep_for_5_seconds_and_return_4, timeout=1)
 
 
 def test_node_server_executes_code_keeping_global_state(node_server):

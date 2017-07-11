@@ -3,8 +3,10 @@
 # * python3.5
 # * docker
 # * docker-compose
+SHELL:=/bin/bash
 
 .SUFFIXES:
+
 
 DEPS:=requirements.txt
 DOCKER_COMPOSE=$(shell which docker-compose)
@@ -14,10 +16,14 @@ CMD_FROM_VENV:=". venv/bin/activate; which"
 TOX=$(shell "$(CMD_FROM_VENV)" "tox")
 PYTHON=$(shell "$(CMD_FROM_VENV)" "python")
 TOX_PY_LIST="$(shell $(TOX) -l | grep ^py | xargs | sed -e 's/ /,/g')"
+DETOX=./node_modules/.bin/detox
+EXAMPLE_APP=./detox/examples/demo-react-native
+EXAMPLE_APP_NODE_MODULES=$(EXAMPLE_APP)/node_modules
+EXAMPLE_APP_BINARY=$(EXAMPLE_APP)/ios/build/Build/Products/Release-iphonesimulator/example.app/example
 
 .PHONY: clean docsclean pyclean test lint isort docs docker setup.py
 
-tox: venv setup.py
+tox: venv setup.py example_app
 	env
 	$(TOX)
 
@@ -33,8 +39,9 @@ clean: pyclean docsclean
 	@rm -rf venv
 
 venv:
-	@virtualenv -p python3.5 venv
-	@$(PIP) install -U "pip>=7.0" -q
+	@python3.6 -m venv venv
+	# pinning setuptools fixes: https://github.com/pypa/setuptools/issues/885
+	@$(PIP) install -U "pip>=9" "setuptools==34.3.3"
 	@$(PIP) install -r $(DEPS)
 
 
@@ -65,3 +72,24 @@ setup.py: venv
 
 build: clean tox
 
+$(DETOX): package.json
+	npm install
+
+$(EXAMPLE_APP_NODE_MODULES): $(EXAMPLE_APP)/package.json
+	pushd detox/examples/demo-react-native && npm install && popd
+
+$(EXAMPLE_APP_BINARY): $(EXAMPLE_APP_NODE_MODULES) $(DETOX)
+	pushd detox/examples/demo-react-native && $(DETOX) build --configuration ios.sim.release && popd
+
+jsdriventest:
+	pushd detox/examples/demo-react-native && $(DETOX) test --configuration ios.sim.release --cleanup && popd
+
+example_app: $(EXAMPLE_APP_BINARY)
+
+clean_example_app: clean_example_app_build clean_example_app_node_modules
+
+clean_example_app_build:
+	rm -rf $(EXAMPLE_APP)/ios/build
+
+clean_example_app_node_modules:
+	rm -rf $(EXAMPLE_APP_NODE_MODULES)

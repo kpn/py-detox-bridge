@@ -26,8 +26,9 @@ def which():
 
 
 class Connection(object):
-    def __init__(self, proc):
+    def __init__(self, proc, default_timeout):
         self._proc = proc
+        self.default_timeout = default_timeout
 
     def __enter__(self):
         return self
@@ -55,7 +56,10 @@ class Connection(object):
             t, v, tb = sys.exc_info()
             self._result = v
 
-    def __call__(self, js, *, timeout=1):
+    def __call__(self, js, *, timeout=None):
+        if timeout is None:
+            timeout = self.default_timeout
+
         thread = threading.Thread(target=lambda: self.send_thread(js))
         thread.daemon = True
         thread.start()
@@ -68,7 +72,7 @@ class Connection(object):
         return self._result
 
 
-def start():
+def start(default_timeout=1):
     executable = which()
 
     proc = Popen(
@@ -78,4 +82,4 @@ def start():
         stdin=PIPE,
         stdout=PIPE)
 
-    return Connection(proc)
+    return Connection(proc, default_timeout)

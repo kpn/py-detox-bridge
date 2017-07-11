@@ -1,0 +1,3 @@
+[submodule "detox"]
+	path = detox
+	url = https://github.com/wix/detox.git

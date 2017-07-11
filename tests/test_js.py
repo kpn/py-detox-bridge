@@ -52,7 +52,7 @@ def test_identifier_property_property():
 
 def test_await():
     assert str(GlobalAwait(Identifier("g").some_method("hello", 1337))) ==\
-        """(async ()=> { await g.some_method("hello", 1337); })();"""
+        """return (async ()=> { return await g.some_method("hello", 1337); })()"""
 
 
 def test_call_encodes_strings_with_quotes_includes_escapes():
@@ -103,6 +103,11 @@ def test_property_works_with_node(node_server):
     assert node_server("return {}".format(Identifier("property"))) == 4
 
 
+def test_property_is_a_global_property(node_server):
+    node_server("property = 4")
+    assert node_server("return {}".format(Identifier("global").property)) == 4
+
+
 def test_function_works_with_node(node_server):
     node_server("add = (x, y) => (x+y);")
     assert node_server("return {}".format(Identifier("add")(3, 4))) == 7
@@ -116,6 +121,11 @@ def test_calling_function_with_dict_with_node(node_server):
 def test_calling_function_with_list_with_node(node_server):
     node_server("id = (x) => (x);")
     assert node_server("return {}".format(Identifier("id")(["hello", 1, "world", 2]))) == ["hello", 1, "world", 2]
+
+
+def test_access_property_of_result_of_function(node_server):
+    node_server("id = (x) => (x);")
+    assert node_server("return {}".format(Identifier("id")({"hello": 1}).hello)) == 1
 
 
 def test_require_function_is_available(node_server):
@@ -132,6 +142,20 @@ def test_identifier_await_is_able_to_set_result(node_server):
 
 
 def test_identifier_await_propagates_exceptions(node_server):
+    with raises(NodeError) as excinfo:
+        node_server("async_func = async () => { throw new Error('hello'); };")
+        node_server(GlobalAwait(Identifier("async_func")()))
+        node_server("throw new Error('hello')", timeout=5)
+    assert excinfo.value.message == "hello"
+    assert excinfo.value.stack
+
+
+def test_identifier_await_propagates_promise_rejection_as_exception(node_server):
+    with raises(NodeError) as excinfo:
+        node_server("p = () => { return Promise.reject(new Error('hello')); }")
+        node_server(GlobalAwait(Identifier("p")()))
+    assert excinfo.value.message == "hello"
+    assert excinfo.value.stack
     with raises(NodeError) as excinfo:
         node_server("async_func = async () => { throw new Error('hello'); };")
         node_server(GlobalAwait(Identifier("async_func")()))
