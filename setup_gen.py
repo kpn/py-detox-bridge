@@ -10,7 +10,7 @@ write_setup_py(
     long_description=open('README.rst').read(),
     author="Jan-Eric Duden",
     author_email='jan-eric.duden@kpn.com',
-    url='ssh://git@github.com:kpn-digital/py-detox-bridge.git',
+    url='https://github.com/kpn-digital/py-detox-bridge',
     install_requires=list_requirements('requirements/requirements-base.txt'),
     packages=find_packages(exclude=['tests*', 'detox']),
     tests_require=['tox'],
