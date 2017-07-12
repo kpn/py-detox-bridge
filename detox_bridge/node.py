@@ -15,7 +15,23 @@ class TimeoutError(RuntimeError):
 
 class NodeError(RuntimeError):
     def __init__(self, error):
-        self.__dict__.update(**error)
+        self._error = error
+
+    @property
+    def message(self):
+        return self._error.get("message")
+
+    @property
+    def stack(self):
+        return self._error.get("stack")
+
+    def __str__(self):
+        lines = []
+        for k, v in self._error.items():
+            lines.append("{}:".format(k))
+            for line in v.splitlines():
+                lines.append("  {}".format(line))
+        return "\n".join(lines)
 
 
 def which():

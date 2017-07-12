@@ -25,20 +25,18 @@ rl.on('line', function(line){
       resolve()
     };
     sandbox.sendResult = (r) => {
-      console.error("Result: "+r);
       sandbox.sendResponse({result: r});
     };
     sandbox.sendError = (e) => {
-      console.error("Send Error: "+e);
       error = {};
       Object.getOwnPropertyNames(e).forEach(function (key) {
           error[key] = e[key];
       });
-      console.error("Error: ");
       sandbox.sendResponse({error:error});
     };
     vm.runInThisContext(`
       try {
+        error = undefined;
         result = (() => { ${command.eval} })();
       }
       catch(e) {
@@ -53,8 +51,6 @@ rl.on('line', function(line){
         Promise.resolve(sandbox.result).then(sandbox.sendResult).catch(sandbox.sendError);
     }
   });
-  return promise.then(()=>{
-    console.error(`Sandbox Globals: ${Object.getOwnPropertyNames(sandbox.global)}`);
-  });
+  return promise;
 });
   
