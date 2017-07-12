@@ -3,29 +3,31 @@ osx_image: xcode8.3
 sudo: required
 cache:
   directories:
-    - /Library/Caches/Homebrew
-    - /usr/local/Cellar
+  - "/Library/Caches/Homebrew"
+  - "/usr/local/Cellar"
 before_install:
-  - curl https://www.python.org/ftp/python/3.6.1/python-3.6.1-macosx10.6.pkg > /tmp/python3.6.1.pkg && sudo installer -pkg /tmp/python3.6.1.pkg -target /
-  - curl https://www.python.org/ftp/python/3.5.3/python-3.5.3-macosx10.6.pkg > /tmp/python3.5.3.pkg && sudo installer -pkg /tmp/python3.5.3.pkg -target /
-  - pip install codecov
-  - export CODE_SIGNING_REQUIRED=NO
-  - which fbsimctl || brew tap facebook/fb && brew install fbsimctl --HEAD
-  - export NVM_DIR="$HOME/.nvm" && [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
-  - nvm install 7.6.0
+- curl https://www.python.org/ftp/python/3.6.1/python-3.6.1-macosx10.6.pkg > /tmp/python3.6.1.pkg
+  && sudo installer -pkg /tmp/python3.6.1.pkg -target /
+- curl https://www.python.org/ftp/python/3.5.3/python-3.5.3-macosx10.6.pkg > /tmp/python3.5.3.pkg
+  && sudo installer -pkg /tmp/python3.5.3.pkg -target /
+- pip install codecov
+- export CODE_SIGNING_REQUIRED=NO
+- which fbsimctl || brew tap facebook/fb && brew install fbsimctl --HEAD
+- export NVM_DIR="$HOME/.nvm" && [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+- nvm install 7.6.0
 install:
-  - nvm use
+- nvm use
 script:
-  - make build
-  - make example_app
+- make build
+- make example_app
 after_success:
-  - codecov
+- codecov
 deploy:
   provider: pypi
   user: kpn-digital
   skip_cleanup: true
   password:
-    secure: ...travis encrypt --add deploy.password...
+    secure: lYKlj+TuGHDfrbvnspgfFChlEc941hraNiuqlAkrwv5PMZrKEPoYMfzFq/36bkAXmfMJdIMo4saqAi+INop5eShsnJkFaPxTc2uEx9FXvTFsZQ8qPHhQUpAYKkSvyGh9PtHwg77PZtARct+HzaS8kEKIT0i9h4hslHhlkqVqzqDAz/J8uOSJ0/8Agk51wVdEYStLL7po1eCKkvBjEaORjSt1cqIHrIrlGYrpp7lgK2u2L4ai4WMuAMCezHaYPFQOI6Aa20nFRRGNL2V5LbSZGU6A5tYLsYk4OoqSZ05JC6d5dBYPANQ+Njz3nd+dtgz/xlffIwl8Eu7czZdVIbM4lOdloiLsoEtw+h/WGyeHiYjXdvaubFYhN91ZFO2OOL/mrEFGEnpEzIHwh3BJ8uFxJi8hcb5BIvLQ+ySnMJu6t9dDyCKYJla025fRAOtqbWgbfe+x2RpUtizNZFu66CJ33U1FP83iDB/PgHxMprKa7UsUJikmUFLLkT/aKhBCcm5NpLyx8rQCvHMTMgI9taRYehynu2u6bx9rrDh9UsmaGxCQvaV7CqP8Z9i/dVSHwjjYa0CZEf+GMRkJ/aNxheaRgIDfEUqfxhTys4tzrBge6jl220dYhCUdOSjKS+2p/0JrUHQA+JfMHbCTtXrx1+1I0SbJ28YjHRTB0uBFt1xC1mc=
   on:
     tags: true
     all_branches: true
