@@ -31,6 +31,17 @@ NODE
 The code emitted by this bridge requires node 7.6.0 or higher.
 
 
+Python
+------
+
+3.5 or 3.6 is required to use the package.
+
+Detox
+-----
+
+Follow the getting started guide from detox ( https://github.com/wix/detox/blob/master/docs/Introduction.GettingStarted.md )
+
+
 Usage
 =====
 
@@ -69,3 +80,32 @@ Usage
        # Cleanup
 
        appserver(await(detox.cleanup()))
+
+Development
+===========
+
+
+Requirements
+------------
+
+Both python 3.5 and python 3.6 are required to run the suite suite.
+
+Checkout
+--------
+
+After checkout run::
+
+   git submodule update --init --recursive 
+
+
+Running tests
+-------------
+
+To run the test suite::
+
+    make test
+
+
+Once the venv is there you can also run some tests via tox::
+
+    venv/bin/tox -e py35 -- -k <regex>

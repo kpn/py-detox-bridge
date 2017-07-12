@@ -31,6 +31,22 @@ Any bug fixes
 Invite users to upgrade in case of vulnerabilities
 - 
 
+## [1.0.2] (2017-07-11)
+
+### Changed
+
+- documentation updates
+
+### Fixes
+
+- package meta data
+
+## [1.0.1] (2017-07-11)
+
+### Fixes
+
+- travis build
+
 ## [1.0.0] (2017-07-11)
 
 ### Added
