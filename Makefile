@@ -41,7 +41,8 @@ clean: pyclean docsclean
 venv:
 	@python3.6 -m venv venv
 	# pinning setuptools fixes: https://github.com/pypa/setuptools/issues/885
-	@$(PIP) install -U "pip>=9" "setuptools==34.3.3"
+	# pinning pip, this version is required by pkgtools
+	@$(PIP) install -U "pip==19.3.1" "setuptools==34.3.3"
 	@$(PIP) install -r $(DEPS)
 
 
