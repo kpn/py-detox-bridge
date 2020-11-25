@@ -17,7 +17,7 @@ TOX=$(shell "$(CMD_FROM_VENV)" "tox")
 PYTHON=$(shell "$(CMD_FROM_VENV)" "python")
 TOX_PY_LIST="$(shell $(TOX) -l | grep ^py | xargs | sed -e 's/ /,/g')"
 DETOX=./node_modules/.bin/detox
-EXAMPLE_APP=./detox/examples/demo-react-native
+EXAMPLE_APP=./example
 EXAMPLE_APP_NODE_MODULES=$(EXAMPLE_APP)/node_modules
 EXAMPLE_APP_BINARY=$(EXAMPLE_APP)/ios/build/Build/Products/Release-iphonesimulator/example.app/example
 
@@ -77,13 +77,13 @@ $(DETOX): package.json
 	npm install
 
 $(EXAMPLE_APP_NODE_MODULES): $(EXAMPLE_APP)/package.json
-	pushd detox/examples/demo-react-native && npm install && popd
+	pushd example && npm install && popd
 
 $(EXAMPLE_APP_BINARY): $(EXAMPLE_APP_NODE_MODULES) $(DETOX)
-	pushd detox/examples/demo-react-native && $(DETOX) build --configuration ios.sim.release && popd
+	pushd example && $(DETOX) build --configuration ios.sim.release && popd
 
 jsdriventest:
-	pushd detox/examples/demo-react-native && $(DETOX) test --configuration ios.sim.release --cleanup && popd
+	pushd example && $(DETOX) test --configuration ios.sim.release --cleanup && popd
 
 example_app: $(EXAMPLE_APP_BINARY)
 

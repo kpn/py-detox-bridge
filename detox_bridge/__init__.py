@@ -22,8 +22,6 @@ def node_with_detox(*, app_path, default_timeout):
 
     try:
         with node.start(default_timeout=default_timeout) as connection:
-            connection("require('{}');".format(
-                os.path.join(app_path, 'node_modules', 'babel-polyfill')))
             connection("detox = require('{}');".format(
                 os.path.join(app_path, 'node_modules', 'detox')))
             yield connection

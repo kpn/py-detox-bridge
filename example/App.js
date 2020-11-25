@@ -6,25 +6,39 @@
  * @flow strict-local
  */
 
-import React from 'react';
+import React, { useState } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
   ScrollView,
   View,
   Text,
+  TouchableOpacity,
   StatusBar,
 } from 'react-native';
 
 import {
   Header,
-  LearnMoreLinks,
   Colors,
-  DebugInstructions,
-  ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
 const App: () => React$Node = () => {
+  const [greeting, setGreeting] = useState(null);
+  const renderAfterButton = () => {
+    return (
+      <View style={{flex: 1, paddingTop: 20, justifyContent: 'center', alignItems: 'center'}}>
+        <Text style={{fontSize: 25}}>
+          {greeting}!!!
+        </Text>
+      </View>
+    );
+  };
+  const updateGreeting = (greeting) => {
+    return () => { setGreeting(greeting) }
+  };
+
+  if(greeting !== null) return renderAfterButton()
+  
   return (
     <>
       <StatusBar barStyle="dark-content" />
@@ -39,32 +53,20 @@ const App: () => React$Node = () => {
             </View>
           )}
           <View style={styles.body}>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle} testID='welcome'>Step One</Text>
-              <Text style={styles.sectionDescription}>
-                Edit <Text style={styles.highlight}>App.js</Text> to change this
-                screen and then come back to see your edits.
+            <View testID='welcome' style={{flex: 1, paddingTop: 20, justifyContent: 'center', alignItems: 'center'}}>
+              <Text style={{fontSize: 25, marginBottom: 30}}>
+                Welcome
               </Text>
+              <TouchableOpacity testID='hello_button' onPress={updateGreeting('Hello')}>
+                <Text style={{color: 'blue', marginBottom: 20}}>Say Hello</Text>
+              </TouchableOpacity>
+              <TouchableOpacity testID='world_button' onPress={updateGreeting('World')}>
+                <Text style={{color: 'blue', marginBottom: 20}}>Say World</Text>
+              </TouchableOpacity>
+              <TouchableOpacity testID='goodbye_button' onPress={updateGreeting('Goodbye, World')}>
+                <Text style={{color: 'blue', marginTop: 50, marginBottom: 20}}>Say Goodbye</Text>
+              </TouchableOpacity>
             </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>See Your Changes</Text>
-              <Text style={styles.sectionDescription}>
-                <ReloadInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Debug</Text>
-              <Text style={styles.sectionDescription}>
-                <DebugInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Learn More</Text>
-              <Text style={styles.sectionDescription}>
-                Read the docs to discover what to do next:
-              </Text>
-            </View>
-            <LearnMoreLinks />
           </View>
         </ScrollView>
       </SafeAreaView>
@@ -82,24 +84,6 @@ const styles = StyleSheet.create({
   },
   body: {
     backgroundColor: Colors.white,
-  },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
-  },
-  highlight: {
-    fontWeight: '700',
   },
   footer: {
     color: Colors.dark,

@@ -7,8 +7,7 @@
     "doc": "docs",
     "test": "tests"
   },
-  "scripts": {
-  },
+  "scripts": {},
   "repository": {
     "type": "git",
     "url": "-"
@@ -18,6 +17,5 @@
   "devDependencies": {
     "detox-cli": "^1.0.2"
   },
-  "dependencies": {
-  }
+  "dependencies": {}
 }

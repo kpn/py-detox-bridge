@@ -8,7 +8,7 @@ from pytest import fixture, mark, raises
 def detox_node_server():
     cwd = os.getcwd()
     try:
-        os.chdir("./detox/examples/demo-react-native")
+        os.chdir("./example")
         app_path = os.getcwd()
         with node_with_detox(app_path=app_path, default_timeout=10) as connection:
             yield connection
@@ -21,9 +21,11 @@ def detox_server(detox_node_server):
     ios_sim_release = {
         "binaryPath": "ios/build/Build/Products/Release-iphonesimulator/example.app",
         "type": "ios.simulator",
-        "name": "iPhone 7 Plus"
+        "device": {
+            "type": "iPhone 11"
+        }
     }
-    configurations_obj = {"configurations": {"ios.sim.release": ios_sim_release}}
+    configurations_obj = {"configurations": {"ios.sim.release": ios_sim_release}, "selectedConfiguration": "ios.sim.release"}
     detox_node_server(await(detox.init(configurations_obj)), timeout=360)
     yield detox_node_server
     detox_node_server(await(detox.cleanup()))

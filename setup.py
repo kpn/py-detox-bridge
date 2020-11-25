@@ -153,5 +153,5 @@ setup(**{'author': 'Jan-Eric Duden',
  'packages': ['detox_bridge'],
  'tests_require': ['tox'],
  'url': 'https://github.com/kpn-digital/py-detox-bridge',
- 'version': '1.0.2',
+ 'version': '1.0.2+2.gee0299a',
  'zip_safe': False})
