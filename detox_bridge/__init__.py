@@ -11,7 +11,7 @@ by = node_global.by
 element = node_global.element
 expect = node_global.expect
 waitFor = node_global.waitFor
-await = js.GlobalAwait
+jsawait = js.GlobalAwait
 
 
 @contextmanager

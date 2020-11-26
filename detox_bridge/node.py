@@ -68,7 +68,7 @@ class Connection(object):
             if error:
                 raise NodeError(error)
             self._result = self._result.get("result", None)
-        except:
+        except:  # noqa: E722
             t, v, tb = sys.exc_info()
             self._result = v
 

@@ -48,7 +48,7 @@ setup(**{'author': 'Jan-Eric Duden',
                      '\n'
                      'The package requires nvm to be installed. Either the NVM '
                      'environment variable needs to contain the full path of '
-                     'the nvm.sh script, or \n'
+                     'the nvm.sh script, or\n'
                      'the NVM_DIR environment variable needs to point at the '
                      'root directory of nvm containing the nvm.sh script.\n'
                      '\n'
@@ -77,7 +77,7 @@ setup(**{'author': 'Jan-Eric Duden',
                      '\n'
                      '.. code:: python\n'
                      '\n'
-                     '   from detox_bridge import await, by, detox, device, '
+                     '   from detox_bridge import jsawait, by, detox, device, '
                      'element, expect, node_with_detox\n'
                      '\n'
                      '   app_path = "detox/examples/demo-react-native"\n'
@@ -103,21 +103,22 @@ setup(**{'author': 'Jan-Eric Duden',
                      '\n'
                      '       # Longer timeout since the app may be installed\n'
                      '\n'
-                     '       appserver(await(detox.init(configurations_obj)), '
+                     '       '
+                     'appserver(jsawait(detox.init(configurations_obj)), '
                      'timeout=360)\n'
                      '\n'
                      '       # Reload react native\n'
                      '\n'
-                     '       appserver(await(device.reloadReactNative()))\n'
+                     '       appserver(jsawait(device.reloadReactNative()))\n'
                      '\n'
                      '       # Expectation\n'
                      '\n'
                      '       '
-                     "appserver(await(expect(element(by.id('welcome'))).toBeVisible()))\n"
+                     "appserver(jsawait(expect(element(by.id('welcome'))).toBeVisible()))\n"
                      '\n'
                      '       # Cleanup\n'
                      '\n'
-                     '       appserver(await(detox.cleanup()))\n'
+                     '       appserver(jsawait(detox.cleanup()))\n'
                      '\n'
                      'Development\n'
                      '===========\n'
@@ -134,7 +135,7 @@ setup(**{'author': 'Jan-Eric Duden',
                      '\n'
                      'After checkout run::\n'
                      '\n'
-                     '   git submodule update --init --recursive \n'
+                     '   git submodule update --init --recursive\n'
                      '\n'
                      '\n'
                      'Running tests\n'
@@ -153,5 +154,5 @@ setup(**{'author': 'Jan-Eric Duden',
  'packages': ['detox_bridge'],
  'tests_require': ['tox'],
  'url': 'https://github.com/kpn-digital/py-detox-bridge',
- 'version': '1.0.2+2.gee0299a',
+ 'version': '1.0.2+4.g3859eb6',
  'zip_safe': False})
