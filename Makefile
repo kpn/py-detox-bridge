@@ -19,6 +19,7 @@ TOX_PY_LIST="$(shell $(TOX) -l | grep ^py | xargs | sed -e 's/ /,/g')"
 DETOX=./node_modules/.bin/detox
 EXAMPLE_APP=./example
 EXAMPLE_APP_NODE_MODULES=$(EXAMPLE_APP)/node_modules
+EXAMPLE_APP_PODS=$(EXAMPLE_APP)/ios/Pods
 EXAMPLE_APP_BINARY=$(EXAMPLE_APP)/ios/build/Build/Products/Release-iphonesimulator/example.app/example
 
 .PHONY: clean docsclean pyclean test lint isort docs docker setup.py
@@ -73,19 +74,33 @@ setup.py: venv
 
 build: clean tox
 
+travis_build: venv setup.py example_app_build_rn_app
+	env
+	$(TOX)
+
 $(DETOX): package.json
 	npm install
 
 $(EXAMPLE_APP_NODE_MODULES): $(EXAMPLE_APP)/package.json
 	pushd example && npm install && popd
 
-$(EXAMPLE_APP_BINARY): $(EXAMPLE_APP_NODE_MODULES) $(DETOX)
+$(EXAMPLE_APP_BINARY): $(EXAMPLE_APP_NODE_MODULES) $(EXAMPLE_APP_PODS) $(DETOX)
 	pushd example && $(DETOX) build --configuration ios.sim.release && popd
+
+$(EXAMPLE_APP_PODS): $(EXAMPLE_APP)/ios/Podfile
+	pushd example/ios && pod install && popd
 
 jsdriventest:
 	pushd example && $(DETOX) test --configuration ios.sim.release --cleanup && popd
 
 example_app: $(EXAMPLE_APP_BINARY)
+
+example_app_pods: $(EXAMPLE_APP_NODE_MODULES) $(EXAMPLE_APP_PODS)
+
+example_app_node_modules: $(EXAMPLE_APP_NODE_MODULES)
+
+example_app_build_rn_app:
+	export RCT_NO_LAUNCH_PACKAGER=true && xcodebuild -workspace example/ios/example.xcworkspace -scheme example -configuration Release -sdk iphonesimulator -derivedDataPath example/ios/build | xcpretty -f `xcpretty-travis-formatter`
 
 clean_example_app: clean_example_app_build clean_example_app_node_modules
 

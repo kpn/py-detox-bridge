@@ -1,25 +1,30 @@
 language: objective-c
-osx_image: xcode8.3
+osx_image: xcode12.2
 sudo: required
 cache:
+  cocoapods: true
   directories:
   - "/Library/Caches/Homebrew"
   - "/usr/local/Cellar"
 before_install:
-- curl https://www.python.org/ftp/python/3.6.1/python-3.6.1-macosx10.6.pkg > /tmp/python3.6.1.pkg
-  && sudo installer -pkg /tmp/python3.6.1.pkg -target /
+- curl https://www.python.org/ftp/python/3.6.6/python-3.6.6-macosx10.6.pkg > /tmp/python3.6.6.pkg
+  && sudo installer -pkg /tmp/python3.6.6.pkg -target /
 - curl https://www.python.org/ftp/python/3.5.3/python-3.5.3-macosx10.6.pkg > /tmp/python3.5.3.pkg
   && sudo installer -pkg /tmp/python3.5.3.pkg -target /
-- pip install codecov
+- pip3.6 install codecov
 - export CODE_SIGNING_REQUIRED=NO
-- which fbsimctl || brew tap facebook/fb && brew install fbsimctl --HEAD
+- brew tap wix/brew && brew install wix/brew/applesimutils
 - export NVM_DIR="$HOME/.nvm" && [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
 - nvm install 15.2.1
+- gem install xcpretty
+- gem install xcpretty-travis-formatter
 install:
 - nvm use
+- make example_app_node_modules
+- make example_app_pods
 script:
-- make build
-- make example_app
+- make travis_build
+#- travis_wait 30 make example_app
 after_success:
 - codecov
 deploy:

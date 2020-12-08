@@ -153,6 +153,6 @@ setup(**{'author': 'Jan-Eric Duden',
  'name': 'detox-bridge',
  'packages': ['detox_bridge'],
  'tests_require': ['tox'],
- 'url': 'https://github.com/kpn-digital/py-detox-bridge',
- 'version': '1.0.2+4.g3859eb6',
+ 'url': 'ssh://git@github.com:kpn-digital/py-detox-bridge.git',
+ 'version': '1.0.2+12.gea1e49f',
  'zip_safe': False})
