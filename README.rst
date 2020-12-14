@@ -1,8 +1,8 @@
 Detox Python Bridge
 ===========================
 
-.. image:: https://secure.travis-ci.org/kpn-digital/py-detox-bridge.svg?branch=master
-    :target:  http://travis-ci.org/kpn-digital/py-detox-bridge?branch=master
+.. image:: https://github.com/kpn-digital/py-detox-bridge/workflows/Build%20&%20test%20py-detox-bridge-workflow/badge.svg
+    :target:  https://github.com/kpn-digital/py-detox-bridge/actions
 
 .. image:: https://img.shields.io/codecov/c/github/kpn-digital/py-detox-bridge/master.svg
     :target: http://codecov.io/github/kpn-digital/py-detox-bridge?branch=master
