@@ -9,27 +9,37 @@ All unreleased changes should be added to appropriate section bellow
 
 ### Added
 New features
-- 
+-
 
 ### Changed
 Changes in existing functionality
-- 
+-
 
 ### Deprecated
 Once-stable features removed in upcoming releases
-- 
+-
 
 ### Removed
 Deprecated featured removed in this release
-- 
+-
 
 ### Fixed
 Any bug fixes
-- 
+-
 
 ### Security
 Invite users to upgrade in case of vulnerabilities
-- 
+-
+
+## [1.0.3] (2020-12-08)
+
+### Changed
+
+- lint fix, travis fix
+
+### Fixes
+
+- fixed issue with Converting circular structure to JSON
 
 ## [1.0.2] (2017-07-11)
 

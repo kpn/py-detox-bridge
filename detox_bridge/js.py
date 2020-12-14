@@ -4,7 +4,7 @@ import json
 class JSObject(object):
 
     def __str__(self):  # pragma: no cover
-        raise NotImplemented("Implement this method")
+        raise NotImplementedError("Implement this method")
 
 
 class Operators(object):

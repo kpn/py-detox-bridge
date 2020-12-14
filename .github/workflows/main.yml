@@ -1,0 +1,34 @@
+name: Build & test py-detox-bridge-workflow
+
+on: [push]
+jobs:
+  build:
+    name: Full run
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: |
+          curl https://www.python.org/ftp/python/3.6.6/python-3.6.6-macosx10.6.pkg > /tmp/python3.6.6.pkg && sudo installer -pkg /tmp/python3.6.6.pkg -target /
+          curl https://www.python.org/ftp/python/3.5.3/python-3.5.3-macosx10.6.pkg > /tmp/python3.5.3.pkg && sudo installer -pkg /tmp/python3.5.3.pkg -target /
+          pip3.6 install codecov
+          export CODE_SIGNING_REQUIRED=NO
+          brew tap wix/brew && brew install wix/brew/applesimutils
+          export NVM_DIR="$HOME/.nvm" && [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+          nvm install 15.2.1
+          gem install xcpretty
+          gem install xcpretty-travis-formatter
+          nvm use
+          make example_app_node_modules
+          make example_app_pods
+      - name: Build
+        run: |
+          make travis_build
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v1
+      - name: Publish package
+        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
+        uses: pypa/gh-action-pypi-publish@master
+        with:
+          user: __token__
+          password: lYKlj+TuGHDfrbvnspgfFChlEc941hraNiuqlAkrwv5PMZrKEPoYMfzFq/36bkAXmfMJdIMo4saqAi+INop5eShsnJkFaPxTc2uEx9FXvTFsZQ8qPHhQUpAYKkSvyGh9PtHwg77PZtARct+HzaS8kEKIT0i9h4hslHhlkqVqzqDAz/J8uOSJ0/8Agk51wVdEYStLL7po1eCKkvBjEaORjSt1cqIHrIrlGYrpp7lgK2u2L4ai4WMuAMCezHaYPFQOI6Aa20nFRRGNL2V5LbSZGU6A5tYLsYk4OoqSZ05JC6d5dBYPANQ+Njz3nd+dtgz/xlffIwl8Eu7czZdVIbM4lOdloiLsoEtw+h/WGyeHiYjXdvaubFYhN91ZFO2OOL/mrEFGEnpEzIHwh3BJ8uFxJi8hcb5BIvLQ+ySnMJu6t9dDyCKYJla025fRAOtqbWgbfe+x2RpUtizNZFu66CJ33U1FP83iDB/PgHxMprKa7UsUJikmUFLLkT/aKhBCcm5NpLyx8rQCvHMTMgI9taRYehynu2u6bx9rrDh9UsmaGxCQvaV7CqP8Z9i/dVSHwjjYa0CZEf+GMRkJ/aNxheaRgIDfEUqfxhTys4tzrBge6jl220dYhCUdOSjKS+2p/0JrUHQA+JfMHbCTtXrx1+1I0SbJ28YjHRTB0uBFt1xC1mc=

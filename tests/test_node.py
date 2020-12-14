@@ -5,7 +5,7 @@ from pytest import raises
 
 
 def test_node_which_pick_up_installed_node(node_environment):
-    assert node_environment.which().endswith("v7.6.0/bin/node")
+    assert node_environment.which().endswith("v15.2.1/bin/node")
 
 
 def test_node_server_responds_with_a_timeout_error_if_code_executioin_takes_longer_than_default_timeout(node_server):

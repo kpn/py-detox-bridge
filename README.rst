@@ -22,7 +22,7 @@ Requirements
 NVM
 ---
 
-The package requires nvm to be installed. Either the NVM environment variable needs to contain the full path of the nvm.sh script, or 
+The package requires nvm to be installed. Either the NVM environment variable needs to contain the full path of the nvm.sh script, or
 the NVM_DIR environment variable needs to point at the root directory of nvm containing the nvm.sh script.
 
 NODE
@@ -47,7 +47,7 @@ Usage
 
 .. code:: python
 
-   from detox_bridge import await, by, detox, device, element, expect, node_with_detox
+   from detox_bridge import jsawait, by, detox, device, element, expect, node_with_detox
 
    app_path = "detox/examples/demo-react-native"
 
@@ -67,19 +67,19 @@ Usage
 
        # Longer timeout since the app may be installed
 
-       appserver(await(detox.init(configurations_obj)), timeout=360)
+       appserver(jsawait(detox.init(configurations_obj)), timeout=360)
 
        # Reload react native
 
-       appserver(await(device.reloadReactNative()))
+       appserver(jsawait(device.reloadReactNative()))
 
        # Expectation
 
-       appserver(await(expect(element(by.id('welcome'))).toBeVisible()))
+       appserver(jsawait(expect(element(by.id('welcome'))).toBeVisible()))
 
        # Cleanup
 
-       appserver(await(detox.cleanup()))
+       appserver(jsawait(detox.cleanup()))
 
 Development
 ===========
@@ -95,7 +95,7 @@ Checkout
 
 After checkout run::
 
-   git submodule update --init --recursive 
+   git submodule update --init --recursive
 
 
 Running tests
