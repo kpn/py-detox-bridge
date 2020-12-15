@@ -28,11 +28,13 @@ jobs:
         uses: codecov/codecov-action@v1
 
   publish:
-    needs: build
     name: Publish pypi package
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.6'
       - name: Build a dist
         run: |
           make build_for_deploy
