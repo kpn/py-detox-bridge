@@ -74,6 +74,9 @@ setup.py: venv
 
 build: clean tox
 
+build_for_deploy:
+	python setup.py sdist bdist_wheel
+
 travis_build: venv setup.py example_app_build_rn_app
 	env
 	$(TOX)
