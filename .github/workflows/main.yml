@@ -37,6 +37,7 @@ jobs:
           python-version: '3.6'
       - name: Build a dist
         run: |
+          pip install wheel
           make build_for_deploy
       - name: Publish package
         if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
