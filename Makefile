@@ -40,11 +40,11 @@ clean: pyclean docsclean
 	@rm -rf venv
 
 venv:
-	@python3.6 -m venv venv
+	$(PYTHON) -m venv venv
 	# pinning setuptools fixes: https://github.com/pypa/setuptools/issues/885
 	# pinning pip, this version is required by pkgtools
-	@$(PIP) install -U "pip==19.3.1" "setuptools==34.3.3"
-	@$(PIP) install -r $(DEPS)
+	$(PIP) install -U "pip==19.3.1" "setuptools==34.3.3"
+	$(PIP) install -r $(DEPS)
 
 
 test: clean tox
@@ -75,6 +75,7 @@ setup.py: venv
 build: clean tox
 
 build_for_deploy:
+	venv
 	python setup.py sdist bdist_wheel
 
 travis_build: venv setup.py example_app_build_rn_app
