@@ -26,23 +26,3 @@ jobs:
           make travis_build
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
-
-  publish:
-    name: Publish pypi package
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
-        with:
-          python-version: '3.6'
-      - name: Build a dist
-        run: |
-          pip install wheel
-          make build_for_deploy
-      - name: Publish package
-        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
-        uses: pypa/gh-action-pypi-publish@master
-        with:
-          user: kpn-digital
-          password: gN2OOf0+oArNdTEgbk500oA7jEECpzmwWpNMKFGYBJ5Tf77mGAECWADhjSj3YZt278HG8UpLc32Cn8KnbcJO9bCmOdlzFAjjHbIsTP8wWsPVQLKE2kSFC2RJThokwWRmkSF+Qk8OAVgF8PQdNaWJP27MgPTgCpf0oVesvD8vuTrjgy4hPfmQDGMbXZsn82ouwUia9XrwVcH2SxSN4AZ0ETG11XZVuuaOkL+OxIcSbLds8JmGXjejMuFEXVaFtJOwiDYMyZurFQQIgPOWI3dGZUuj2d8+fN+S3WnPrsgzikDKutWpx5xuqmTSGpOMgaMBoFhFVI+Iz84yf516l2LxWkyErztKhrsSsZtgGL7U/FZVVVmzPXDsVAJSNuvpb7wyJl/UCfy1SDoOAcR0Cn7G4PpOKhmJOiX7h9tVnKEQdqpGwS2XvWUXISyr7TS0NI+fFsrkb4TRCArxfHlVEzE+qKEiAViZkVvZthkty18WDbtYg67pV2wDJ7UO56GB9HDQXF//zBDUFmOibhvCC2wkOONFO+i3eYX/Z62xuVSrVheb+kwFrKcF/FntIrRdFBQMxtbMVZR4x7xhnPYcFw8RUIab2CY+MdzLiDX2AD5qNYGtmUu00iV2ku5tbHgp4jJNcXlFvHHN6/syKCzAT3GiDFsXAA2Zgr6fYEnh4RoIPOw=
-
