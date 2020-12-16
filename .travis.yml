@@ -1,8 +1,10 @@
 language: python
-python:
-  - "3.6"
+python: 3.6
+install:
+- make venv
 script:
-- make build_for_deploy
+- python setup_gen.py
+- python setup.py sdist bdist_wheel
 deploy:
   provider: pypi
   user: kpn-digital
