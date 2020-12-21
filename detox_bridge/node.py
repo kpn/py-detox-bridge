@@ -5,7 +5,7 @@ import sys
 import threading
 from subprocess import PIPE, Popen, check_output
 
-logger = logging.getLogger('detox-bridge-node')
+logger = logging.getLogger("detox-bridge-node")
 
 
 class TimeoutError(RuntimeError):
@@ -91,11 +91,6 @@ class Connection(object):
 def start(default_timeout=1):
     executable = which()
 
-    proc = Popen(
-        [executable,
-            os.path.join(os.path.dirname(__file__),
-                         "bridge.js")],
-        stdin=PIPE,
-        stdout=PIPE)
+    proc = Popen([executable, os.path.join(os.path.dirname(__file__), "bridge.js")], stdin=PIPE, stdout=PIPE)
 
     return Connection(proc, default_timeout)

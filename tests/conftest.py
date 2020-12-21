@@ -1,7 +1,8 @@
 from os import chdir, getcwd
 
-from detox_bridge import node
 from pytest import fixture
+
+from detox_bridge import node
 
 
 @fixture

@@ -22,8 +22,7 @@ def node_with_detox(*, app_path, default_timeout):
 
     try:
         with node.start(default_timeout=default_timeout) as connection:
-            connection("detox = require('{}');".format(
-                os.path.join(app_path, 'node_modules', 'detox')))
+            connection("detox = require('{}');".format(os.path.join(app_path, "node_modules", "detox")))
             yield connection
     finally:
         os.chdir(old_cwd)
