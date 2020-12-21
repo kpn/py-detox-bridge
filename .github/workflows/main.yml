@@ -9,7 +9,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: Install dependencies
         run: |
-          curl https://www.python.org/ftp/python/3.6.6/python-3.6.6-macosx10.6.pkg > /tmp/python3.6.6.pkg && sudo installer -pkg /tmp/python3.6.6.pkg -target /
+          curl https://www.python.org/ftp/python/3.7.9/python-3.7.9-macosx10.9.pkg > /tmp/python3.7.9.pkg && sudo installer -pkg /tmp/python3.7.9.pkg -target /
           export CODE_SIGNING_REQUIRED=NO
           brew tap wix/brew && brew install wix/brew/applesimutils
           export NVM_DIR="$HOME/.nvm"
