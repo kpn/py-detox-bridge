@@ -1,7 +1,8 @@
 from textwrap import dedent
 
-from detox_bridge import js, node
 from pytest import raises
+
+from detox_bridge import js, node
 
 
 def test_node_which_pick_up_installed_node(node_environment):
@@ -15,8 +16,9 @@ def test_node_server_responds_with_a_timeout_error_if_code_executioin_takes_long
 
 
 def test_node_allows_for_default_timeout_overidden_by_timeout_in_call(node_server):
-    sleep_for_5_seconds_and_return_4 =\
-        "return new Promise((resolve) => { setTimeout(()=> { console.error(\"resolved\"); resolve(4); }, 5000); });"
+    sleep_for_5_seconds_and_return_4 = (
+        'return new Promise((resolve) => { setTimeout(()=> { console.error("resolved"); resolve(4); }, 5000); });'
+    )
 
     node_server.default_timeout = 10
     assert node_server(sleep_for_5_seconds_and_return_4) == 4
@@ -49,9 +51,9 @@ def test_node_server_executes_code_reporting_exceptions_and_then_we_can_execute_
 
 
 def test_node_error_str_prints_multiline_exceptions_nicely():
-    assert str(node.NodeError({
-        "stack": "Line 1\nLine 2",
-    })) == dedent("""\
+    assert str(node.NodeError({"stack": "Line 1\nLine 2"})) == dedent(
+        """\
     stack:
       Line 1
-      Line 2""")
+      Line 2"""
+    )

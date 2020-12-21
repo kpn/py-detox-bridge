@@ -1,3 +1,26 @@
-# Additional packages
--r requirements/requirements-base.txt
--r requirements/requirements-testing.txt
+# Tests
+tox
+# twine and pytest install the latest version of importlib-metadata not compatible with tox
+# This dependency will be automatically resolved when we upgrade to pip>=21
+importlib-metadata<3,>=0.12; python_version < "3.8"
+isort
+black
+flake8
+mypy
+
+# PyTest for running the tests.
+pytest
+pytest-cov
+
+# Distribution
+twine
+wheel
+
+# gitchangelog
+gitchangelog
+pystache
+
+# docs
+sphinx
+sphinxcontrib-plantuml
+sphinx_rtd_theme

@@ -1,114 +1,130 @@
 # This Makefile requires the following commands to be available:
-# * virtualenv
-# * python3.5
-# * docker
-# * docker-compose
-SHELL:=/bin/bash
+# * python3.7
+# * rubygems
 
-.SUFFIXES:
+SRC:=detox_bridge tests setup.py
+ROOT_DIR:=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
+DETOX=$(ROOT_DIR)/node_modules/.bin/detox
 
-
-DEPS:=requirements.txt
-DOCKER_COMPOSE=$(shell which docker-compose)
-
-PIP:="venv/bin/pip"
-CMD_FROM_VENV:=". venv/bin/activate; which"
-TOX=$(shell "$(CMD_FROM_VENV)" "tox")
-PYTHON=$(shell "$(CMD_FROM_VENV)" "python")
-TOX_PY_LIST="$(shell $(TOX) -l | grep ^py | xargs | sed -e 's/ /,/g')"
-DETOX=./node_modules/.bin/detox
-EXAMPLE_APP=./example
-EXAMPLE_APP_NODE_MODULES=$(EXAMPLE_APP)/node_modules
-EXAMPLE_APP_PODS=$(EXAMPLE_APP)/ios/Pods
-EXAMPLE_APP_BINARY=$(EXAMPLE_APP)/ios/build/Build/Products/Release-iphonesimulator/example.app/example
-
-.PHONY: clean docsclean pyclean test lint isort docs docker setup.py
-
-tox: venv setup.py example_app
-	env
-	$(TOX)
-
+.PHONY: pyclean
 pyclean:
-	@find . -name *.pyc -delete
-	@rm -rf *.egg-info build
-	@rm -rf coverage.xml .coverage
+	-find . -name "*.pyc" -delete
+	-rm -rf *.egg-info build
+	-rm -rf coverage*.xml .coverage
 
-docsclean:
-	@rm -fr docs/_build/
+.PHONY: clean
+clean: pyclean clean_example_app
+	-rm -rf venv
+	-rm -rf .tox
 
-clean: pyclean docsclean
-	@rm -rf venv
-
+venv: PYTHON?=python3.7
 venv:
-	@python3.6 -m venv venv
-	# pinning setuptools fixes: https://github.com/pypa/setuptools/issues/885
-	# pinning pip, this version is required by pkgtools
-	@$(PIP) install -U "pip==19.3.1" "setuptools==34.3.3"
-	@$(PIP) install -r $(DEPS)
+	$(PYTHON) -m venv venv
+	# FIXME: unpin when https://github.com/pypa/pip/issues/9215 is fixed
+	venv/bin/pip install -U "pip==20.2" -q
+	venv/bin/pip install -r requirements.txt
 
+## Code style
+.PHONY: lint
+lint: lint/black lint/flake8 lint/isort lint/mypy
 
-test: clean tox
+.PHONY: lint/black
+lint/black: venv
+	venv/bin/black --diff --check $(SRC)
 
-test/%: venv pyclean
-	$(TOX) -e $(TOX_PY_LIST) -- $*
+.PHONY: lint/flake8
+lint/flake8: venv
+	venv/bin/flake8 $(SRC)
 
-lint: venv
-	@$(TOX) -e lint
-	@$(TOX) -e isort-check
+.PHONY: lint/isort
+lint/isort: venv
+	venv/bin/isort --diff --check $(SRC)
 
-isort: venv
-	@$(TOX) -e isort-fix
+.PHONY: lint/mypy
+lint/mypy: venv
+	venv/bin/mypy $(SRC)
 
-docs: venv
-	@$(TOX) -e docs
+.PHONY: format
+format: format/isort format/black
 
-docker:
-	$(DOCKER_COMPOSE) run --rm app bash
+.PHONY: format/isort
+format/isort: venv
+	venv/bin/isort $(SRC)
 
-docker/%:
-	$(DOCKER_COMPOSE) run --rm app make $*
+.PHONY: format/black
+format/black: venv
+	venv/bin/black $(SRC)
 
-setup.py: venv
-	$(PYTHON) setup_gen.py
-	@$(PYTHON) setup.py check --restructuredtext
+## Tests
+.PHONY: unittests
+unittests: TOX_ENV?=ALL
+unittests: TOX_EXTRA_PARAMS?=""
+unittests: venv
+	venv/bin/tox -e $(TOX_ENV) $(TOX_EXTRA_PARAMS)
 
-build: clean tox
+.PHONY: test
+test: pyclean unittests
 
-build_for_deploy: venv
-	python setup.py sdist bdist_wheel
+## Distribution
+.PHONY: changelog
+changelog:
+	venv/bin/gitchangelog
 
-travis_build: venv setup.py example_app_build_rn_app
-	env
-	$(TOX)
+.PHONY: build
+build: venv
+	-rm -rf dist build
+	venv/bin/python setup.py sdist bdist_wheel
+	venv/bin/twine check dist/*
 
+.PHONY: nvm_install
+nvm_install:
+	source "${NVM_DIR}/nvm.sh" && nvm install 15.2.1
+
+.PHONY: app_github_requirements
+app_github_requirements: nvm_install
+	gem install xcpretty
+	gem install xcpretty-travis-formatter
+
+.PHONY: app_local_requirements
+app_local_requirements: nvm_install
+	sudo gem install xcpretty -n /usr/local/bin
+	sudo gem install xcpretty-travis-formatter -n /usr/local/bin
+
+## JS app related stuff
 $(DETOX): package.json
 	npm install
 
-$(EXAMPLE_APP_NODE_MODULES): $(EXAMPLE_APP)/package.json
-	pushd example && npm install && popd
+.PHONY: example_app_node_modules
+example_app_node_modules: ./example/package.json
+	pushd example && source "${NVM_DIR}/nvm.sh" && nvm use && npm install && popd
 
-$(EXAMPLE_APP_BINARY): $(EXAMPLE_APP_NODE_MODULES) $(EXAMPLE_APP_PODS) $(DETOX)
-	pushd example && $(DETOX) build --configuration ios.sim.release && popd
-
-$(EXAMPLE_APP_PODS): $(EXAMPLE_APP)/ios/Podfile
+.PHONY: example_app_pods
+example_app_pods: example_app_node_modules ./example/ios/Podfile
 	pushd example/ios && pod install && popd
 
+.PHONY: example_app_binary
+example_app_binary: example_app_node_modules example_app_pods $(DETOX)
+	pushd example && source "${NVM_DIR}/nvm.sh" && nvm use && $(DETOX) build --configuration ios.sim.release --logLevel trace && popd
+
+.PHONY: jsdriventest
 jsdriventest:
 	pushd example && $(DETOX) test --configuration ios.sim.release --cleanup && popd
 
-example_app: $(EXAMPLE_APP_BINARY)
+.PHONY: clean_example_app
+clean_example_app: clean_example_app_build clean_example_app_node_modules clean_example_app_pods
 
-example_app_pods: $(EXAMPLE_APP_NODE_MODULES) $(EXAMPLE_APP_PODS)
-
-example_app_node_modules: $(EXAMPLE_APP_NODE_MODULES)
-
-example_app_build_rn_app:
-	export RCT_NO_LAUNCH_PACKAGER=true && xcodebuild -workspace example/ios/example.xcworkspace -scheme example -configuration Release -sdk iphonesimulator -derivedDataPath example/ios/build | xcpretty -f `xcpretty-travis-formatter`
-
-clean_example_app: clean_example_app_build clean_example_app_node_modules
-
+.PHONY: clean_example_app_build
 clean_example_app_build:
-	rm -rf $(EXAMPLE_APP)/ios/build
+	rm -rf ./example/ios/build
 
+.PHONY: clean_example_app_pods
+clean_example_app_pods:
+	rm -rf ./example/ios/Pods
+
+.PHONY: clean_example_app_node_modules
 clean_example_app_node_modules:
-	rm -rf $(EXAMPLE_APP_NODE_MODULES)
+	rm -rf ./example/node_modules
+
+.PHONY: docs
+docs: venv
+	sphinx-build -W -b html docs /docs/_build/html

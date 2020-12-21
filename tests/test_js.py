@@ -1,8 +1,9 @@
 from collections import OrderedDict
 
+from pytest import raises
+
 from detox_bridge.js import Call, GlobalAwait, Identifier, ObjectProperty, Operators
 from detox_bridge.node import NodeError
-from pytest import raises
 
 
 def test_operators_raises_attribute_error_for_underscore_methods_that_are_not_supported():
@@ -51,12 +52,14 @@ def test_identifier_property_property():
 
 
 def test_await():
-    assert str(GlobalAwait(Identifier("g").some_method("hello", 1337))) ==\
-        """return (async ()=> { return await g.some_method("hello", 1337); })()"""
+    assert (
+        str(GlobalAwait(Identifier("g").some_method("hello", 1337)))
+        == """return (async ()=> { return await g.some_method("hello", 1337); })()"""
+    )
 
 
 def test_call_encodes_strings_with_quotes_includes_escapes():
-    assert str(Call(args=["he\"llo"], parent="")) == """("he\\"llo")"""
+    assert str(Call(args=['he"llo'], parent="")) == """("he\\"llo")"""
 
 
 def test_call_encodes_lists():
@@ -64,33 +67,32 @@ def test_call_encodes_lists():
 
 
 def test_call_encodes_dicts():
-    assert str(Call(args=[{"key1": "item1", "key2": "item2"}], parent="")) ==\
-        """({"key1": "item1", "key2": "item2"})"""
+    assert str(Call(args=[{"key1": "item1", "key2": "item2"}], parent="")) == """({"key1": "item1", "key2": "item2"})"""
 
 
 def test_call_encodes_ordereddict():
-    assert str(Call(args=[OrderedDict({"key1": "item1", "key2": "item2"})], parent="")) ==\
-        """({"key1": "item1", "key2": "item2"})"""
+    assert (
+        str(Call(args=[OrderedDict({"key1": "item1", "key2": "item2"})], parent=""))
+        == """({"key1": "item1", "key2": "item2"})"""
+    )
 
 
 def test_call_encodes_dicts_with_escapes_keys():
-    assert str(Call(args=[{"key\\1": "item1"}], parent="")) ==\
-        r"""({"key\\1": "item1"})"""
+    assert str(Call(args=[{"key\\1": "item1"}], parent="")) == r"""({"key\\1": "item1"})"""
 
 
 def test_call_encodes_dicts_with_values_doing_calls():
-    assert str(Call(args=[{"key": Call(args=["second", 123], parent="")}], parent="")) ==\
-        r"""({"key": ("second", 123)})"""
+    assert (
+        str(Call(args=[{"key": Call(args=["second", 123], parent="")}], parent="")) == r"""({"key": ("second", 123)})"""
+    )
 
 
 def test_call_encodes_lists_with_values_doing_calls():
-    assert str(Call(args=[[Call(args=["second", 123], parent="")]], parent="")) ==\
-        r"""([("second", 123)])"""
+    assert str(Call(args=[[Call(args=["second", 123], parent="")]], parent="")) == r"""([("second", 123)])"""
 
 
 def test_call_encodes_none_to_null():
-    assert str(Call(args=[None], parent="")) ==\
-        r"""(null)"""
+    assert str(Call(args=[None], parent="")) == r"""(null)"""
 
 
 def test_value_error_if_encoding_is_broken():
@@ -129,9 +131,7 @@ def test_access_property_of_result_of_function(node_server):
 
 
 def test_require_function_is_available(node_server):
-    node_server("{} = {}".format(
-        Identifier("readline"), Call(args=["readline"], parent="require"))
-    )
+    node_server("{} = {}".format(Identifier("readline"), Call(args=["readline"], parent="require")))
     assert node_server("return readline") is not None
 
 

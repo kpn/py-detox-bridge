@@ -1,11 +1,6 @@
 language: python
 python: 3.6
-install:
-- pip install -U "pip==19.3.1" "setuptools==34.3.3"
-- pip install -r requirements.txt
-script:
-- python setup_gen.py
-- python setup.py sdist bdist_wheel
+script: skip
 deploy:
   provider: pypi
   user: kpn-digital

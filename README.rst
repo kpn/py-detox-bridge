@@ -34,7 +34,7 @@ The code emitted by this bridge requires node 7.6.0 or higher.
 Python
 ------
 
-3.5 or 3.6 is required to use the package.
+3.6 is required to use the package.
 
 Detox
 -----
@@ -88,14 +88,14 @@ Development
 Requirements
 ------------
 
-Both python 3.5 and python 3.6 are required to run the suite suite.
+Python 3.6 are required to run the suite suite.
 
 Checkout
 --------
 
 After checkout run::
 
-   git submodule update --init --recursive
+   make app_local_requirements
 
 
 Running tests

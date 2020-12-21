@@ -2,7 +2,6 @@ import json
 
 
 class JSObject(object):
-
     def __str__(self):  # pragma: no cover
         raise NotImplementedError("Implement this method")
 
@@ -57,8 +56,9 @@ class Call(Operators, JSObject):
             return str(arg)
 
         elif isinstance(arg, dict):
-            encoded_items = ", ".join("{}: {}".format(
-                json.dumps(k), Call.encode_arg(arg[k])) for k in sorted(arg.keys()))
+            encoded_items = ", ".join(
+                "{}: {}".format(json.dumps(k), Call.encode_arg(arg[k])) for k in sorted(arg.keys())
+            )
             return "{{{}}}".format(encoded_items)
 
         elif isinstance(arg, list):

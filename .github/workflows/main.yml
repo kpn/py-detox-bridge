@@ -10,19 +10,19 @@ jobs:
       - name: Install dependencies
         run: |
           curl https://www.python.org/ftp/python/3.6.6/python-3.6.6-macosx10.6.pkg > /tmp/python3.6.6.pkg && sudo installer -pkg /tmp/python3.6.6.pkg -target /
-          curl https://www.python.org/ftp/python/3.5.3/python-3.5.3-macosx10.6.pkg > /tmp/python3.5.3.pkg && sudo installer -pkg /tmp/python3.5.3.pkg -target /
-          pip3.6 install codecov
           export CODE_SIGNING_REQUIRED=NO
           brew tap wix/brew && brew install wix/brew/applesimutils
-          export NVM_DIR="$HOME/.nvm" && [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
-          nvm install 15.2.1
-          gem install xcpretty
-          gem install xcpretty-travis-formatter
-          nvm use
-          make example_app_node_modules
-          make example_app_pods
-      - name: Build
+          export NVM_DIR="$HOME/.nvm"
+          make app_github_requirements
+          make example_app_binary
+      - name: Lint
         run: |
-          make travis_build
+          make lint
+      - name: Test
+        run: |
+          make test
+      - name: Build check
+        run: |
+          make build
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
