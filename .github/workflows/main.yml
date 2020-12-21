@@ -7,7 +7,7 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Install dependencies
+      - name: Install dependencies and build example app
         run: |
           curl https://www.python.org/ftp/python/3.7.9/python-3.7.9-macosx10.9.pkg > /tmp/python3.7.9.pkg && sudo installer -pkg /tmp/python3.7.9.pkg -target /
           export CODE_SIGNING_REQUIRED=NO
