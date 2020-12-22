@@ -76,6 +76,11 @@ build: venv
 	venv/bin/python setup.py sdist bdist_wheel
 	venv/bin/twine check dist/*
 
+.PHONY: upload
+upload: venv
+	-rm -rf dist build
+	venv/bin/python setup.py sdist bdist_wheel upload -r local
+
 .PHONY: nvm_install
 nvm_install:
 	source "${NVM_DIR}/nvm.sh" && nvm install 15.2.1
