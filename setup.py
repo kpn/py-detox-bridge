@@ -14,7 +14,7 @@ setup(
     long_description_content_type="text/x-rst",
     author="Jan-Eric Duden",
     author_email="jan-eric.duden@kpn.com",
-    url="ssh://git@github.com:kpn-digital/py-detox-bridge.git",
+    url="https://github.com/kpn-digital/py-detox-bridge",
     packages=find_packages(exclude=["tests*", "detox"]),
     tests_require=["tox"],
     include_package_data=True,
